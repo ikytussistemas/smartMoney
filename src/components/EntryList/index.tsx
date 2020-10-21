@@ -1,15 +1,31 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, FlatList, StyleSheet } from 'react-native'
 
 import EntryListItem from './EntryListItem';
+import { getEntries } from '../../services/Entries';
 
-export default function EntryList({entries}) {
+export default function EntryList() {
+  
+  const [entries, setEntries] = useState([])
+
+  useEffect(()=>{
+    const loadEntries= async() => {
+      const data = await getEntries();
+      setEntries(data);
+    }
+
+    loadEntries();
+  }, [entries])
+  
   return (
     <View style={styles.container}>
      <Text style={styles.itemText}>Últimos Lançamentos</Text>
       <FlatList
         data={entries}
-  renderItem={({item}) => <Text>{item.description} - R$ {item.amount}</Text>}>
+        renderItem={({item}) => 
+        <Text>
+          {item.description} - R$ {item.amount}
+        </Text>}>
       </FlatList>
     </View>
   )

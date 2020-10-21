@@ -5,7 +5,7 @@ import { Picker } from '@react-native-community/picker';
 import { useNavigation } from '@react-navigation/native';
 
 import BalanceLabel from '../../components/BalanceLabel';
-import EntrySummary from '../../components/EntrySummary';
+import EntrySummary from '../../components/EntrySummary'; 
 import EntryList from '../../components/EntryList';
 
 export default function Report({currentBalance}) {
