@@ -1,19 +1,21 @@
 import React, {useState} from 'react'
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import BalanceLabel from '../../components/BalanceLabel';
 import {saveEntry} from '../../services/Entries';
 
 export default function NewEntry({currentBalance}) {
   const navigation = useNavigation();
-  const [amount, setAmount] = useState('0.00')
+  const route = useRoute()
+  const  entry = route.params['entry']
+  const [amount, setAmount] = useState(`${entry.amount}`)
 
   const save =() => {
     const value = {
       amount:parseFloat(amount)
     }
-    saveEntry(value);
+    saveEntry(value, entry);
   }
 
   return (
