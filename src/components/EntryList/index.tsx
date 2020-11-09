@@ -1,62 +1,51 @@
-import React, {useEffect, useState} from 'react'
-import { View, Text, FlatList, StyleSheet, Button } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
+import {getEntries} from '../../services/Entries';
 import EntryListItem from './EntryListItem';
-import { getEntries } from '../../services/Entries';
+import Colors from '../../styles/colors';
+import Container from '../core/Container';
 
 export default function EntryList() {
-
   const navigation = useNavigation();
-  
-  const [entries, setEntries] = useState([])
 
-  useEffect(()=>{
-    const loadEntries= async() => {
+  const [entries, setEntries] = useState([]);
+
+  useEffect(() => {
+    const loadEntries = async () => {
       const data = await getEntries();
       setEntries(data);
-    }
-
-    loadEntries();
-  }, [entries])
+    };
   
+    loadEntries();
+  }, [entries]);
+
+  const onEntryPress = (entry)=>{
+    navigation.navigate('NewEntry', {entry: entry})
+  };
+  const goReport = ()=>{
+    navigation.navigate('Report')
+  };
+
   return (
-    <View style={styles.container}>
-     <Text style={styles.itemText}>Últimos Lançamentos</Text>
+    <Container title="Últimos Lançamentos"
+      actionLabelText="Últimos 7 dias"
+      actionButtonText="Ver mais"
+      onPressActionButton={()=>goReport}
+    >
       <FlatList
         data={entries}
-        renderItem={({item}) => 
-        <View>
-          <Text style={styles.itemText}>
-            {item.description} - R$ {item.amount}
-          </Text>
-          <Button 
-            title={item.id} 
-            onPress={()=>
-              navigation.navigate('NewEntry', {entry: item})
-            }/>
-        </View>  
-        }>
-      </FlatList>
-    </View>
-  )
+        keyExtractor={item => item.id}
+        renderItem={
+          ({item, index}) => 
+            <EntryListItem 
+              entry={item}
+              onEntryPress={onEntryPress}
+              isFirstItem={index === 0}
+              isLastItem={index === entries.length -1}
+            />
+        } />
+    </Container>
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    marginTop: 5,
-    paddingHorizontal: 5,
-    borderWidth: 2,
-    borderColor: '#000',
-    borderRadius: 10,
-    backgroundColor: '#bdc3c7',
-    height: '30%',
-  },
-  itemText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 10,
-  },
-})

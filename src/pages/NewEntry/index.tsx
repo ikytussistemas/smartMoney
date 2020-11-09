@@ -3,7 +3,10 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import BalanceLabel from '../../components/BalanceLabel';
-import {saveEntry} from '../../services/Entries';
+import NewEntryInput from './NewEntryInput'
+
+import {saveEntry, deleteEntry} from '../../services/Entries';
+import Colors from '../../styles/colors';
 
 export default function NewEntry({currentBalance}) {
   const navigation = useNavigation();
@@ -11,21 +14,37 @@ export default function NewEntry({currentBalance}) {
   const  entry = route.params['entry']
   const [amount, setAmount] = useState(`${entry.amount}`)
 
+  const isValid = () => {
+    if (parseFloat(amount) !== 0) {
+      return true;
+    }
+    return false;
+  }
+
   const save =() => {
     const value = {
       amount:parseFloat(amount)
     }
     saveEntry(value, entry);
+    goBack();
+  }
+
+  const remove = () => {
+    deleteEntry(entry)
+    goBack();
+  }
+
+  const goBack= () =>{
+    navigation.goBack();
   }
 
   return (
     <View style={styles.container}>
-      <BalanceLabel currentBalance={currentBalance}/>
+      <BalanceLabel/>
       <View>
-        <TextInput 
-          style={styles.input}
-          onChangeText={(text)=> setAmount(text)}
+        <NewEntryInput
           value={amount}
+          onChangeValue={setAmount}
         />
         <TextInput 
           style={styles.input}
@@ -35,8 +54,13 @@ export default function NewEntry({currentBalance}) {
         <Button title='Camera' onPress={()=>{}}/>
       </View>
       <View>
-        <Button title='Adicionar' onPress={save}/>
-        <Button title='Cancelar' onPress={()=>navigation.navigate('Main')}/>
+        <Button 
+          title='Adicionar' 
+          onPress={() =>{
+            isValid() && save()}
+          }/>
+        <Button title='Excluir' onPress={remove}/>
+        <Button title='Cancelar' onPress={()=>goBack()}/>
       </View>
     </View>
   )
@@ -44,7 +68,9 @@ export default function NewEntry({currentBalance}) {
 
 const styles = StyleSheet.create({
   container: {
-  //  flex: 1,
+  flex: 1,
+  backgroundColor: Colors.background,
+  padding: 10
   },
   input: {
     borderColor: '#000',

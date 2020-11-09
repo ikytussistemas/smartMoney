@@ -4,7 +4,6 @@ import { View, Text, FlatList, StyleSheet } from 'react-native'
 export default function EntrySummaryList({entriesGrouped}) {
   return (
     <View>
-      <Text style={styles.itemText}>Categorias</Text>
       <FlatList
         data={entriesGrouped}
         renderItem={({item}) => 
