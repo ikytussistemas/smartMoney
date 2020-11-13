@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import EntrySummaryChart from './EntrySummaryChart';
 import EntrySummaryList from './EntrySummaryList';
 import Container from '../core/Container';
+import { getAllCategories } from '../../services/Categories';
 
 export default function EntrySummary() {
   const navigation = useNavigation();
@@ -15,17 +16,13 @@ export default function EntrySummary() {
     {key: '4', description: 'Lazer', amount: 250},
     {key: '5', description: 'Outros', amount: 200},
   ]
-
-  const goReport = ()=>{
-    navigation.navigate('Report')
-  };
-
+  
   return (
     <Container 
       title="Categorias"
       actionLabelText="Últimos 100 dias"
       actionButtonText="Ver mais"
-      onPressActionButton={()=>goReport}
+      onPressActionButton={()=>navigation.navigate('Report')}
       >
       <EntrySummaryChart/>
       <EntrySummaryList entriesGrouped={entriesGrouped}/>

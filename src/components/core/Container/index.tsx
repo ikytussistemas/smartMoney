@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Colors from '../../../styles/colors';
@@ -8,7 +10,7 @@ export interface Props {
   actionLabelText?: string,
   actionButtonText?: string,
   title?: string,
-  onPressActionButton?:()=>{},
+  onPressActionButton?:()=>void,
 }
 
 const Container: React.FC<Props> = ({
@@ -18,6 +20,8 @@ const Container: React.FC<Props> = ({
   onPressActionButton,
   title,
 }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       {title && <Text style={styles.title}>{title}</Text>}
@@ -32,7 +36,7 @@ const Container: React.FC<Props> = ({
           {actionButtonText && (
             <TouchableOpacity
               style={styles.actionButton}
-              onPress={onPressActionButton}>
+              onPress={()=> navigation.navigate('Report')}>
               <Icon name="insert-chart" style={styles.actionButtonIcon} />
               <Text style={styles.actionButtonText}>{actionButtonText}</Text>
             </TouchableOpacity>

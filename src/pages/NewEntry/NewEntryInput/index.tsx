@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -9,15 +9,37 @@ export interface Props {
   onChangeValue?:any,
 }
 
+const h = () => {
+
+}
+
 const NewEntryInput: React.FC<Props> = ({
   children,
   value,
   onChangeValue,
 }) => {
+  const [ debit, setDebit] = useState( parseFloat(value) < 0 ? -1 : 1)
+  const [ debitPrefix, setDebitPrefix] = useState( parseFloat(value) < 0 ? '-' : '')
+
+  const onChangeDebitCredit = () => {
+    if (debit < 0) {
+      setDebit(1)
+      setDebitPrefix('')
+    } else {
+      setDebit(-1)
+      setDebitPrefix('-')
+    }
+    onChangeValue(parseFloat(value) * -1)
+  }
+
   return (
   <View style={Styles.container}>
-    <TouchableOpacity style={Styles.debitButton}> 
-      <Text style={Styles.debitButtonPrefix}>-</Text>
+    <TouchableOpacity style={Styles.debitButton}
+      onPress={onChangeDebitCredit}
+    > 
+      <Text style={Styles.debitButtonPrefix}>
+        {debitPrefix}
+      </Text>
       <Text style={Styles.debitButtonText}>R$</Text>
     </TouchableOpacity>
     <TextInputMask
@@ -33,7 +55,7 @@ const NewEntryInput: React.FC<Props> = ({
       value={value}
       includeRawValueInChangeText={true}
       onChangeText={(text, rawText) => {
-        onChangeValue && onChangeValue(rawText)
+        onChangeValue && onChangeValue(parseFloat(rawText) * debit)
       }}
     >
 
@@ -61,6 +83,7 @@ const Styles = StyleSheet.create({
   debitButtonText: {
     fontSize: 28,
     color: Colors.white,
+    minWidth: 8,
   },
   input: {
     flex: 1,

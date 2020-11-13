@@ -24,15 +24,11 @@ export default function EntryList() {
   const onEntryPress = (entry)=>{
     navigation.navigate('NewEntry', {entry: entry})
   };
-  const goReport = ()=>{
-    navigation.navigate('Report')
-  };
-
+    
   return (
     <Container title="Últimos Lançamentos"
       actionLabelText="Últimos 7 dias"
       actionButtonText="Ver mais"
-      onPressActionButton={()=>goReport}
     >
       <FlatList
         data={entries}
