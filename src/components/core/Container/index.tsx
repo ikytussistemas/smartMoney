@@ -10,7 +10,7 @@ export interface Props {
   actionLabelText?: string,
   actionButtonText?: string,
   title?: string,
-  onPressActionButton?:()=>void,
+  onPressActionButton?:any,
 }
 
 const Container: React.FC<Props> = ({

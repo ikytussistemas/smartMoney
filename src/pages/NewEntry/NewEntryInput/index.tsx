@@ -7,16 +7,14 @@ import Colors from '../../../styles/colors';
 export interface Props {
   value?: string,
   onChangeValue?:any,
-}
-
-const h = () => {
-
+  onChangeDebit?:any,
 }
 
 const NewEntryInput: React.FC<Props> = ({
   children,
   value,
   onChangeValue,
+  onChangeDebit,
 }) => {
   const [ debit, setDebit] = useState( parseFloat(value) < 0 ? -1 : 1)
   const [ debitPrefix, setDebitPrefix] = useState( parseFloat(value) < 0 ? '-' : '')
@@ -25,9 +23,11 @@ const NewEntryInput: React.FC<Props> = ({
     if (debit < 0) {
       setDebit(1)
       setDebitPrefix('')
+      onChangeDebit(false)
     } else {
       setDebit(-1)
       setDebitPrefix('-')
+      onChangeDebit(true)
     }
     onChangeValue(parseFloat(value) * -1)
   }

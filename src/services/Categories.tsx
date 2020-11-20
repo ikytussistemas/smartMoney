@@ -10,6 +10,7 @@ export const getDefaultCategories = () => {
       name: 'Alimentação',
       color: '#1abc9c',
       isDebit: true,
+      isInit: false,
       order: 0,
     },
     {
@@ -17,6 +18,7 @@ export const getDefaultCategories = () => {
       name: 'Restaurantes e Bares',
       color: '#2ecc71',
       isDebit: true,
+      isInit: false,
       order: 1,
     },
     {
@@ -24,6 +26,7 @@ export const getDefaultCategories = () => {
       name: 'Casa',
       color: '#3498db',
       isDebit: true,
+      isInit: false,
       order: 2,
     },
     {
@@ -31,6 +34,7 @@ export const getDefaultCategories = () => {
       name: 'Compras',
       color: '#9b59b6',
       isDebit: true,
+      isInit: false,
       order: 3,
     },
     {
@@ -38,6 +42,7 @@ export const getDefaultCategories = () => {
       name: 'Cuidados Pessoais',
       color: '#f1c40f',
       isDebit: true,
+      isInit: false,
       order: 4,
     },
     {
@@ -45,6 +50,7 @@ export const getDefaultCategories = () => {
       name: 'Dívidas e Empréstimos',
       color: '#f39c12',
       isDebit: true,
+      isInit: false,
       order: 5,
     },
     {
@@ -52,6 +58,7 @@ export const getDefaultCategories = () => {
       name: 'Educação',
       color: '#e67e22',
       isDebit: true,
+      isInit: false,
       order: 6,
     },
     {
@@ -59,6 +66,7 @@ export const getDefaultCategories = () => {
       name: 'Família e Filhos',
       color: '#d35400',
       isDebit: true,
+      isInit: false,
       order: 7,
     },
     {
@@ -66,6 +74,7 @@ export const getDefaultCategories = () => {
       name: 'Impostos e Taxas',
       color: '#e74c3c',
       isDebit: true,
+      isInit: false,
       order: 8,
     },
     {
@@ -73,6 +82,7 @@ export const getDefaultCategories = () => {
       name: 'Investimentos',
       color: '#c0392b',
       isDebit: true,
+      isInit: false,
       order: 9,
     },
     {
@@ -80,6 +90,7 @@ export const getDefaultCategories = () => {
       name: 'Lazer',
       color: '#ecf0f1',
       isDebit: true,
+      isInit: false,
       order: 10,
     },
     {
@@ -87,6 +98,7 @@ export const getDefaultCategories = () => {
       name: 'Mercado',
       color: '#bdc3c7',
       isDebit: true,
+      isInit: false,
       order: 11,
     },
     {
@@ -94,6 +106,7 @@ export const getDefaultCategories = () => {
       name: 'Outras Despesas',
       color: '#95a5a6',
       isDebit: true,
+      isInit: false,
       order: 12,
     },
 
@@ -102,6 +115,7 @@ export const getDefaultCategories = () => {
       name: 'Empréstimos',
       color: '#273c75',
       isCredit: true,
+      isInit: false,
       order: 1,
     },
     {
@@ -109,6 +123,7 @@ export const getDefaultCategories = () => {
       name: 'Investimentos',
       color: '#4cd137',
       isCredit: true,
+      isInit: false,
       order: 2,
     },
     {
@@ -116,6 +131,7 @@ export const getDefaultCategories = () => {
       name: 'Salário',
       color: '#487eb0',
       isCredit: true,
+      isInit: false,
       order: 3,
     },
     {
@@ -123,6 +139,7 @@ export const getDefaultCategories = () => {
       name: 'Outras Receitas',
       color: '#8c7ae6',
       isCredit: true,
+      isInit: false,
       order: 4,
     },
     {
@@ -137,7 +154,7 @@ export const getDefaultCategories = () => {
 
 export const getAllCategories = async () => {
   const realm = await getRealm();
-  return realm.objects('Category').sorted('order');
+  return realm.objects<[]>('Category').sorted('order').map(item => item);
 };
 
 export const saveCategory = async () => {
@@ -157,17 +174,19 @@ export const saveCategory = async () => {
 export const getDebitCategories = async () => {
   const realm = await getRealm();
   return realm
-    .objects('Category')
+    .objects<[]>('Category')
     .filtered('isDebit = true AND isInit = false')
-    .sorted('order');
+    .sorted('order')
+    .map(item => item);
 };
 
 export const getCreditCategories = async () => {
   const realm = await getRealm();
   return realm
-    .objects('Category')
+    .objects<[]>('Category')
     .filtered('isCredit = true AND isInit = false')
-    .sorted('order');
+    .sorted('order')
+    .map(item => item);
 };
 
 export const getInitCategories = async () => {

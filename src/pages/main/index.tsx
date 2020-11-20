@@ -27,6 +27,13 @@ const Main = () => {
       console.log('initDB :: categories already existing... Skypping.');
     }
   };
+  const dropDB = async () => {
+    const realm = await getRealm();
+    console.log('dropDB :: dropping db...');
+    realm.write(() => {
+      realm.deleteAll();
+    });
+  };
   
   return (
     <View style={styles.container}>

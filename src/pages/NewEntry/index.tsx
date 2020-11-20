@@ -1,18 +1,23 @@
 import React, {useState} from 'react'
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, Button, StyleSheet } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import BalanceLabel from '../../components/BalanceLabel';
-import NewEntryInput from './NewEntryInput'
+import NewEntryInput from './NewEntryInput';
+import NewEntryCategoryPicker from './NewEntryCategoryPicker';
+import NewEntryDatePicker from './NewEntryDatePicker';
 
 import {saveEntry, deleteEntry} from '../../services/Entries';
 import Colors from '../../styles/colors';
 
 export default function NewEntry({currentBalance}) {
   const navigation = useNavigation();
-  const route = useRoute()
-  const  entry = route.params['entry']
-  const [amount, setAmount] = useState(`${entry.amount}`)
+  const route = useRoute();
+  const  entry = route.params['entry'];
+  const [amount, setAmount] = useState(`${entry.amount}`);
+  const [debit, setDebit] = useState(entry.amount <= 0 ? -1 : 1);
+  const [category, setCategory] = useState(entry.category);
+  const [entryAt, setEntryAt ] = useState(entry.entryAt);
 
   const isValid = () => {
     if (parseFloat(amount) !== 0) {
@@ -23,8 +28,12 @@ export default function NewEntry({currentBalance}) {
 
   const save =() => {
     const value = {
-      amount:parseFloat(amount)
+      amount:parseFloat(amount),
+      category: category,
+      entryAt: entryAt
     }
+    console.log(`entry:: ${JSON.stringify(entry)}`);
+    console.log(`value:: ${JSON.stringify(value)}`);
     saveEntry(value, entry);
     goBack();
   }
@@ -41,17 +50,28 @@ export default function NewEntry({currentBalance}) {
   return (
     <View style={styles.container}>
       <BalanceLabel/>
-      <View>
+      <View style={styles.FormContainer}>
         <NewEntryInput
           value={amount}
           onChangeValue={setAmount}
+          onChangeDebit={setDebit}
         />
-        <TextInput 
-          style={styles.input}
-          
+        <NewEntryCategoryPicker 
+          debit={debit}
+          category={category}
+          onChangeCategory={setCategory}          
+        />
+        <View style={styles.FormActionContainer}>
+          <NewEntryDatePicker 
+            value={entryAt}
+            onChange={setEntryAt}
           />
-        <Button title='GPS' onPress={()=>navigation.navigate('Report')}/>
-        <Button title='Camera' onPress={()=>{}}/>
+        </View>
+        <TouchableOpacity  onPress={()=>navigation.navigate('Rel')}
+        >
+          <Text>GPS</Text>
+        </TouchableOpacity>
+
       </View>
       <View>
         <Button 
@@ -72,8 +92,13 @@ const styles = StyleSheet.create({
   backgroundColor: Colors.background,
   padding: 10
   },
-  input: {
-    borderColor: '#000',
-    borderWidth: 1
+  FormContainer: {
+    flex: 1,
+    paddingVertical: 20
+  },
+  FormActionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10
   }
 })

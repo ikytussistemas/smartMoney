@@ -22,7 +22,7 @@ export default function EntrySummary() {
       title="Categorias"
       actionLabelText="Últimos 100 dias"
       actionButtonText="Ver mais"
-      onPressActionButton={()=>navigation.navigate('Report')}
+      onPressActionButton={navigation.navigate('Report')}
       >
       <EntrySummaryChart/>
       <EntrySummaryList entriesGrouped={entriesGrouped}/>

@@ -29,6 +29,7 @@ export default function EntryList() {
     <Container title="Últimos Lançamentos"
       actionLabelText="Últimos 7 dias"
       actionButtonText="Ver mais"
+      onPressActionButton={()=>{}}
     >
       <FlatList
         data={entries}

@@ -5,7 +5,8 @@ export class Category {
     color: string,
     isDefault: boolean,     
     isCredit: boolean,     
-    isDebit: boolean,     
+    isDebit: boolean,
+    isInit: boolean,     
     order: number,
   ) {}
 }

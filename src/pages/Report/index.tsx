@@ -8,7 +8,7 @@ import BalanceLabel from '../../components/BalanceLabel';
 import EntrySummary from '../../components/EntrySummary'; 
 import EntryList from '../../components/EntryList';
 
-export default function Report( ) {
+export default function Report() {
   const navigate = useNavigation();
  
   return (

@@ -14,6 +14,7 @@ export default function BalancePanel() {
   const newItem = {
     id: null,
     amount: 0,
+    category: {id: null, name: 'Selecione', isInit: false},
     entryAt: new Date(),
   }
    return (
